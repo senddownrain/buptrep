@@ -1,19 +1,26 @@
 const sheetUrl = "https://spreadsheets.google.com/feeds/cells/1RT08opfOwAJxBjvKnoI5yxRJscxuLyk5zB6CF8Eh0QM/oydcpt5/public/values?alt=json"
+import moment from 'moment'
 
 export default {
     state: {
         entries: [],
         answers: [],
         sortedAnswers: {},
-        dataItems: []
+        dataItems: [],
+        
+        sortedAnswersShot: {},
+        dataItemsShot: []
     },
     mutations: {
         updateAnswers(state, entries){
             state.answers = parseAnswersData(entries)
             state.sortedAnswers = groupByKey(state.answers.reverse(), 'buptDate')
+            state.sortedAnswersShot = groupByKey(state.answers.filter(a => moment().add(-1, 'days').isBefore(moment(a.buptDate,'DD.MM.yyyy'))).reverse(), 'buptDate')
+
         },
         updateDataItems(state, entries){
             state.dataItems = parseDataItems(entries)
+            state.dataItemsShot = state.dataItems.filter(a => moment().add(-1,'days').isBefore(moment(a.buptDate,'DD.MM.yyyy')))
            // state.sortedAnswers = groupByKey(state.answers.reverse(), 'buptDate')
         },
         updateItems(state, entries) {
@@ -39,7 +46,6 @@ export default {
                 })
                 .catch(error => {
                     ctx.commit('setError', error)
-
                 });
         },
         fetchDataItems(ctx, url = dataUrl) {
@@ -65,6 +71,8 @@ export default {
         }
     },
     getters: {
+        dataItemsShot: s => s.dataItemsShot,
+        sortedItemsShot: s => s.sortedAnswersShot,
         items(state, getters) {
             return state.answers;
         },
