@@ -11,7 +11,7 @@
         target="_blank"
         text
       >
-        <span class="mr-2">Answers Report</span>
+        <span class="mr-2">Подготовка к крещению</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
