@@ -5,7 +5,7 @@ export default{
     mutations: {
         setError(state, error){
             state.error = error
-            console.error("There was an error!", error)
+            console.log(error)
         },
         clearError(state){
             state.error = ""

@@ -116,7 +116,26 @@
               </v-card>
             </v-col>
 
+
             <v-col>
+              <v-card flat>
+                <v-card-title> Данные о ребенке </v-card-title>
+                <v-card-subtitle> По дате крещения </v-card-subtitle>
+                <v-list>
+                  <v-list-item-group color="primary">
+                    <v-list-item v-for="(data, i) in filtereData" :key="i">
+                      <v-list-item-content @click="showData(data)">
+                        <v-list-item-title>
+                          {{ data.name }} - {{ data.buptDate }}
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-card>
+            </v-col>
+
+            <!-- <v-col>
               <v-card flat>
                 <v-card-title> Данные о ребенке </v-card-title>
                 <v-card-subtitle> По дате крещения </v-card-subtitle>
@@ -146,12 +165,16 @@
                   </v-expansion-panel>
                 </v-expansion-panels>
               </v-card>
-            </v-col>
+            </v-col> -->
+
+
           </v-row>
         </v-container>
       </v-tab-item>
-    </v-tabs-items>
+    </v-tabs-items> 
 
+
+<!-- диалоги -->
     <v-dialog
       fullscreen
       hide-overlay
@@ -180,6 +203,55 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+      v-model="dataDialog"
+    >
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-toolbar-title
+            >{{ currentData.name }} -
+            {{ currentData.buptPlace }}</v-toolbar-title
+          >
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn icon dark @click="dataDialog = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+        <v-container>
+          <v-row>
+            <v-col>
+              Рождение: {{ currentData.birthDate }} -
+              {{ currentData.birthPlace }}
+              <br />
+              Крещение: {{ currentData.buptDate }} -
+              {{ currentData.buptPlace }} <br /><br />
+              <b>Родители:</b> <br />
+              {{ currentData.father }}<br />
+              {{ currentData.mother }}<br />
+              {{ currentData.married }}<br /><br />
+              <b>Крестные:</b> <br />
+              {{ currentData.bfather }}<br />
+              {{ currentData.bmother }}<br /><br />
+              Свидетельство: {{ currentData.stateDocs }}<br /><br />
+              {{ currentData.timeStamp }}
+            </v-col>
+          </v-row>
+        </v-container>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="dataDialog = false">
+            Закрыть
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -187,6 +259,7 @@
 import answerDetails from "./answerDetails";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import moment from "moment";
+
 const sheetUrl =
   "https://spreadsheets.google.com/feeds/cells/1RT08opfOwAJxBjvKnoI5yxRJscxuLyk5zB6CF8Eh0QM/oydcpt5/public/values?alt=json";
 export default {
@@ -197,6 +270,8 @@ export default {
       thisWeekOnly: false,
       dialog: false,
       currentItem: {},
+      dataDialog: false,
+      currentData: {},
     };
   },
   computed: {
@@ -232,6 +307,10 @@ export default {
     showItem(item) {
       this.currentItem = item;
       this.dialog = true;
+    },
+    showData(data) {
+      this.currentData = data;
+      this.dataDialog = true;
     },
   },
   components: {

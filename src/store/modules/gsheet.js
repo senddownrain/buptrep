@@ -1,5 +1,7 @@
-const sheetUrl = "https://spreadsheets.google.com/feeds/cells/1RT08opfOwAJxBjvKnoI5yxRJscxuLyk5zB6CF8Eh0QM/oydcpt5/public/values?alt=json"
+//const sheetUrl = "https://spreadsheets.google.com/feeds/cells/1RT08opfOwAJxBjvKnoI5yxRJscxuLyk5zB6CF8Eh0QM/oydcpt5/public/values?alt=json"
+const sheetUrl = "https://sheets.googleapis.com/v4/spreadsheets/1RT08opfOwAJxBjvKnoI5yxRJscxuLyk5zB6CF8Eh0QM/values/A1:N1000?key=AIzaSyCFcMfzG_Ej8_uvPQon30_f8xQMuXtLPF4"
 import moment from 'moment'
+
 
 export default {
     state: {
@@ -33,7 +35,7 @@ export default {
             fetch(url)
                 .then(async response => {
                     const data = await response.json();
-
+                    console.log(data)
                     // check for error response
                     if (!response.ok) {
                         // get error message from body or default to response statusText
@@ -42,7 +44,7 @@ export default {
                         return Promise.reject(error);
                     }
 
-                    ctx.commit('updateAnswers', data.feed.entry)
+                    ctx.commit('updateAnswers', data.values)
                 })
                 .catch(error => {
                     ctx.commit('setError', error)
@@ -62,7 +64,7 @@ export default {
                         return Promise.reject(error);
                     }
 
-                    ctx.commit('updateDataItems', data.feed.entry)
+                    ctx.commit('updateDataItems', data.values)
                 })
                 .catch(error => {
                     ctx.commit('setError', error)
@@ -106,144 +108,67 @@ export default {
 
 
 function parseAnswersData(entries) {
-    var data = new Map();
 
-    entries.forEach(function (value) {
-        var subval = value.gs$cell;
-
-        if (subval.row == 1)
+    var data = [];
+    entries.shift()
+console.log(entries)
+    entries.forEach(function (arr) {
+        if (arr.length !== 10)
             return;
-
+            
         var obj = {};
-        if (data.has(subval.row)) {
-            obj = data.get(subval.row);
-        } else {
-            obj = {
-                "timeStamp": "",
-                "name": "",
-                "type": "",
-                "contact": "",
-                "q1": "",
-                "q2": "",
-                "q3": "",
-                "q4": "",
-                "q5": "",
-                "buptDate": ""
-            }
+        obj = {
+            "timeStamp": arr[0],
+            "name": arr[1],
+            "type": arr[2],
+            "contact": arr[3],
+            "q1": arr[4],
+            "q2": arr[5],
+            "q3": arr[6],
+            "q4": arr[7],
+            "q5": arr[8],
+            "buptDate": arr[9]
         }
-
-        switch (Number.parseInt(subval.col)) {
-            case 1:
-                obj.timeStamp = subval.$t;
-                break;
-            case 2:
-                obj.name = subval.$t;
-                break;
-            case 3:
-                obj.type = subval.$t;
-                break;
-            case 4:
-                obj.contact = subval.$t;
-                break;
-            case 5:
-                obj.q1 = subval.$t;
-                break;
-            case 6:
-                obj.q2 = subval.$t;
-                break;
-            case 7:
-                obj.q3 = subval.$t;
-                break;
-            case 8:
-                obj.q4 = subval.$t;
-                break;
-            case 9:
-                obj.q5 = subval.$t;
-                break;
-            case 10:
-                obj.buptDate = subval.$t;
-                break;
-        }
-
-        data.set(subval.row, obj);
+            
+            data.push(obj)
     });
 
-    return Array.from(data.values())
+    console.log(data)
+    return data.sort((a,b) => parseDate(a.buptDate) - parseDate(b.buptDate));
 }
 //1aWikUkhi-8Bji6mn9I4cK_OwHL63wwS5lRy-XVwgul4
-const dataUrl = "https://spreadsheets.google.com/feeds/cells/1aWikUkhi-8Bji6mn9I4cK_OwHL63wwS5lRy-XVwgul4/1/public/values?alt=json"
+//https://sheets.googleapis.com/v4/spreadsheets/1aWikUkhi-8Bji6mn9I4cK_OwHL63wwS5lRy-XVwgul4/values/Sheet1!A1:N1000
+//const dataUrl = "https://spreadsheets.google.com/feeds/cells/1aWikUkhi-8Bji6mn9I4cK_OwHL63wwS5lRy-XVwgul4/1/public/values?alt=json"
+const dataUrl = "https://sheets.googleapis.com/v4/spreadsheets/1aWikUkhi-8Bji6mn9I4cK_OwHL63wwS5lRy-XVwgul4/values/A1:N1000?key=AIzaSyCFcMfzG_Ej8_uvPQon30_f8xQMuXtLPF4"
+
 function parseDataItems(entries) {
-    var data = new Map();
+    var data = [];
+    entries.shift()
 
-    entries.forEach(function (value) {
-        var subval = value.gs$cell;
-
-        if (subval.row == 1)
+    entries.forEach(function (arr) {
+        if (arr.length !== 12)
             return;
-
+            
         var obj = {};
-        if (data.has(subval.row)) {
-            obj = data.get(subval.row);
-        } else {
             obj = {
-                "timeStamp": "",
-                "name": "",
-                "birthDate": "",
-                "birthPlace": "",
-                "buptDate": "",
-                "buptPlace": "",
-                "father": "",
-                "mother": "",
-                "married": "",
-                "bfather": "",
-                "bmother": "",
-                "stateDocs": ""  
+                "timeStamp": arr[0],
+                "name": arr[1],
+                "birthDate": arr[2],
+                "birthPlace": arr[3],
+                "buptDate": arr[4],
+                "buptPlace": arr[5],
+                "father": arr[6],
+                "mother": arr[7],
+                "married": arr[8],
+                "bfather": arr[9],
+                "bmother": arr[10],
+                "stateDocs": arr[11]  
             }
-        }
-
-        switch (Number.parseInt(subval.col)) {
-            case 1:
-                obj.timeStamp = subval.$t;
-                break;
-            case 2:
-                obj.name = subval.$t;
-                break;
-            case 3:
-                obj.birthDate = subval.$t;
-                break;
-            case 4:
-                obj.birthPlace = subval.$t;
-                break;
-            case 5:
-                obj.buptDate = subval.$t;
-                break;
-            case 6:
-                obj.buptPlace = subval.$t;
-                break;
-            case 7:
-                obj.father = subval.$t;
-                break;
-            case 8:
-                obj.mother = subval.$t;
-                break;
-            case 9:
-                obj.married = subval.$t;
-                break;
-            case 10:
-                obj.bfather = subval.$t;
-                break;
-            case 11:
-                obj.bmother = subval.$t;
-                break;
-            case 12:
-                obj.stateDocs = subval.$t;
-                break;
-        }
-
-        data.set(subval.row, obj);
+            
+            data.push(obj)
     });
 
-    return Array.from(data.values()).sort((a,b) => parseDate(a.buptDate) - parseDate(b.buptDate)).reverse()
+    return data.sort((a,b) => parseDate(a.buptDate) - parseDate(b.buptDate)).reverse()
 }
 
 function groupByKey(array, key) {
