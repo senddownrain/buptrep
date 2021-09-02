@@ -227,7 +227,7 @@
           <v-row>
             <v-col>
               Рождение: {{ currentData.birthDate }} -
-              {{ currentData.birthPlace }}
+              {{ currentData.buptDate }}
               <br />
               Крещение: {{ currentData.buptDate }} -
               {{ currentData.buptPlace }} <br /><br />
