@@ -9,21 +9,21 @@ export default {
         answers: [],
         sortedAnswers: {},
         dataItems: [],
-        
+
         sortedAnswersShot: {},
         dataItemsShot: []
     },
     mutations: {
-        updateAnswers(state, entries){
+        updateAnswers(state, entries) {
             state.answers = parseAnswersData(entries)
             state.sortedAnswers = groupByKey(state.answers.reverse(), 'buptDate')
-            state.sortedAnswersShot = groupByKey(state.answers.filter(a => moment().add(-1, 'days').isBefore(moment(a.buptDate,'DD.MM.yyyy'))).reverse(), 'buptDate')
+            state.sortedAnswersShot = groupByKey(state.answers.filter(a => moment().add(-1, 'days').isBefore(moment(a.buptDate, 'DD.MM.yyyy'))).reverse(), 'buptDate')
 
         },
-        updateDataItems(state, entries){
+        updateDataItems(state, entries) {
             state.dataItems = parseDataItems(entries)
-            state.dataItemsShot = state.dataItems.filter(a => moment().add(-1,'days').isBefore(moment(a.buptDate,'DD.MM.yyyy')))
-           // state.sortedAnswers = groupByKey(state.answers.reverse(), 'buptDate')
+            state.dataItemsShot = state.dataItems.filter(a => moment().add(-1, 'days').isBefore(moment(a.buptDate, 'DD.MM.yyyy')))
+            // state.sortedAnswers = groupByKey(state.answers.reverse(), 'buptDate')
         },
         updateItems(state, entries) {
             state.entries = entries
@@ -35,7 +35,7 @@ export default {
             fetch(url)
                 .then(async response => {
                     const data = await response.json();
-                    console.log(data)
+                    //       console.log(data)
                     // check for error response
                     if (!response.ok) {
                         // get error message from body or default to response statusText
@@ -84,17 +84,17 @@ export default {
         dataItems(state, getters) {
             return state.dataItems;
         },
-        currentAnswersItems(state){
+        currentAnswersItems(state) {
             let [start, end] = getWeekDates();
             let filtered = state.answers.filter(x => {
                 let d = parseDate(x.buptDate)
                 let res = d > start && d <= end
-                
+
                 return res;
             });
             return groupByKey(filtered, 'buptDate')
         },
-        currentDataItems(state){
+        currentDataItems(state) {
             let [start, end] = getWeekDates();
             return state.dataItems.filter(x => {
                 let d = parseDate(x.buptDate)
@@ -111,11 +111,11 @@ function parseAnswersData(entries) {
 
     var data = [];
     entries.shift()
-console.log(entries)
+    //console.log(entries)
     entries.forEach(function (arr) {
         if (arr.length !== 10)
             return;
-            
+
         var obj = {};
         obj = {
             "timeStamp": arr[0],
@@ -129,12 +129,12 @@ console.log(entries)
             "q5": arr[8],
             "buptDate": arr[9]
         }
-            
-            data.push(obj)
+
+        data.push(obj)
     });
 
-    console.log(data)
-    return data.sort((a,b) => parseDate(a.buptDate) - parseDate(b.buptDate));
+    //  console.log(data)
+    return data.sort((a, b) => parseDate(a.buptDate) - parseDate(b.buptDate));
 }
 //1aWikUkhi-8Bji6mn9I4cK_OwHL63wwS5lRy-XVwgul4
 //https://sheets.googleapis.com/v4/spreadsheets/1aWikUkhi-8Bji6mn9I4cK_OwHL63wwS5lRy-XVwgul4/values/Sheet1!A1:N1000
@@ -148,27 +148,27 @@ function parseDataItems(entries) {
     entries.forEach(function (arr) {
         if (arr.length !== 12)
             return;
-            
+
         var obj = {};
-            obj = {
-                "timeStamp": arr[0],
-                "name": arr[1],
-                "birthDate": arr[2],
-                "birthPlace": arr[3],
-                "buptDate": arr[4],
-                "buptPlace": arr[5],
-                "father": arr[6],
-                "mother": arr[7],
-                "married": arr[8],
-                "bfather": arr[9],
-                "bmother": arr[10],
-                "stateDocs": arr[11]  
-            }
-            
-            data.push(obj)
+        obj = {
+            "timeStamp": arr[0],
+            "name": arr[1],
+            "birthDate": arr[2],
+            "birthPlace": arr[3],
+            "buptDate": arr[4],
+            "buptPlace": arr[5],
+            "father": arr[6],
+            "mother": arr[7],
+            "married": arr[8],
+            "bfather": arr[9],
+            "bmother": arr[10],
+            "stateDocs": arr[11]
+        }
+
+        data.push(obj)
     });
 
-    return data.sort((a,b) => parseDate(a.buptDate) - parseDate(b.buptDate)).reverse()
+    return data.sort((a, b) => parseDate(a.buptDate) - parseDate(b.buptDate)).reverse()
 }
 
 function groupByKey(array, key) {
@@ -209,16 +209,15 @@ function getWeekDates() {
     let now = new Date();
     let dayOfWeek = now.getDay(); //0-6
     let numDay = now.getDate();
-  
+
     let start = new Date(now); //copy
     start.setDate(numDay - dayOfWeek);
     start.setHours(0, 0, 0, 0);
-  
-  
+
+
     let end = new Date(now); //copy
     end.setDate(numDay + (7 - dayOfWeek));
     end.setHours(0, 0, 0, 0);
-  
+
     return [start, end];
-  }
-  
+}
