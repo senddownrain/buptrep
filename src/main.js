@@ -8,6 +8,13 @@ import VueAxios from 'vue-axios'
 
 Vue.use(VueAxios, axios)
 
+const moment = require('moment')
+require('moment/locale/be')
+ 
+Vue.use(require('vue-moment'), {
+    moment
+})
+
 Vue.config.productionTip = false
 
 new Vue({

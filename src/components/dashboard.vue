@@ -46,6 +46,26 @@
               </v-card>
             </v-col>
 
+
+            <v-col>
+              <v-card flat>
+                <v-card-title> Данные о ребенке </v-card-title>
+                <v-card-subtitle> По дате крещения </v-card-subtitle>
+                <v-list>
+                  <v-list-item-group color="primary">
+                    <v-list-item v-for="(data, i) in filtereDataShot" :key="i">
+                      <v-list-item-content @click="showData(data)">
+                        <v-list-item-title>
+                          {{ data.name }} - {{ data.buptDate }}
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-card>
+            </v-col>
+
+<!-- 
             <v-col>
               <v-card flat>
                 <v-card-title> Данные о ребенке </v-card-title>
@@ -76,10 +96,12 @@
                   </v-expansion-panel>
                 </v-expansion-panels>
               </v-card>
-            </v-col>
+            </v-col>-->
           </v-row>
         </v-container>
-      </v-tab-item>
+      </v-tab-item> 
+
+
       <v-tab-item>
         <v-container>
           <v-row>
@@ -226,10 +248,10 @@
         <v-container>
           <v-row>
             <v-col>
-              Рождение: {{ currentData.birthDate }} -
-              {{ currentData.buptDate }}
+              Рождение: {{ [currentData.birthDate, "DD.MM.YYYY" ]  | moment('LL') }} -
+              {{ currentData.birthPlace }}
               <br />
-              Крещение: {{ currentData.buptDate }} -
+              Крещение: {{ [currentData.buptDate, "DD.MM.YYYY" ] | moment('LL') }} -
               {{ currentData.buptPlace }} <br /><br />
               <b>Родители:</b> <br />
               {{ currentData.father }}<br />
@@ -310,6 +332,7 @@ export default {
     },
     showData(data) {
       this.currentData = data;
+     // console.log(this.currentData)
       this.dataDialog = true;
     },
   },

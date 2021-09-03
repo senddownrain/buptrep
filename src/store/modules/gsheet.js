@@ -2,7 +2,6 @@
 const sheetUrl = "https://sheets.googleapis.com/v4/spreadsheets/1RT08opfOwAJxBjvKnoI5yxRJscxuLyk5zB6CF8Eh0QM/values/A1:N1000?key=AIzaSyCFcMfzG_Ej8_uvPQon30_f8xQMuXtLPF4"
 import moment from 'moment'
 
-
 export default {
     state: {
         entries: [],
@@ -148,14 +147,14 @@ function parseDataItems(entries) {
     entries.forEach(function (arr) {
         if (arr.length !== 12)
             return;
-
+            moment.locale('bе');
         var obj = {};
         obj = {
             "timeStamp": arr[0],
             "name": arr[1],
-            "birthDate": arr[2],
+            "birthDate": arr[2], //moment(arr[2]).format("LL"),
             "birthPlace": arr[3],
-            "buptDate": arr[4],
+            "buptDate": arr[4], //moment(arr[4]).format("LL"),
             "buptPlace": arr[5],
             "father": arr[6],
             "mother": arr[7],
