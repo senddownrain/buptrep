@@ -8,12 +8,31 @@
       <v-tab-item>
         <v-checkbox
           v-model="thisWeekOnly"
-          :label="`Только текущая неделя: ${thisWeekOnly.toString()}`"
+          :label="`Только текущая неделя`"
         >
         </v-checkbox>
         <v-container>
           <v-row>
-            <v-col class="col-sm-12">
+       
+            <v-col>
+              <v-card flat>
+                <v-card-title> Данные о ребенке </v-card-title>
+                <v-card-subtitle> По дате крещения </v-card-subtitle>
+                <v-list>
+                  <v-list-item-group color="primary">
+                    <v-list-item v-for="(data, i) in filtereDataShot" :key="i">
+                      <v-list-item-content @click="showData(data)">
+                        <v-list-item-title>
+                          {{ data.name }} - {{ data.buptDate }}
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-card>
+            </v-col>
+
+     <v-col class="col-sm-12">
               <v-card flat>
                 <v-card-title> Ответы на вопросы </v-card-title>
                 <v-card-subtitle
@@ -46,24 +65,6 @@
               </v-card>
             </v-col>
 
-
-            <v-col>
-              <v-card flat>
-                <v-card-title> Данные о ребенке </v-card-title>
-                <v-card-subtitle> По дате крещения </v-card-subtitle>
-                <v-list>
-                  <v-list-item-group color="primary">
-                    <v-list-item v-for="(data, i) in filtereDataShot" :key="i">
-                      <v-list-item-content @click="showData(data)">
-                        <v-list-item-title>
-                          {{ data.name }} - {{ data.buptDate }}
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
-                </v-list>
-              </v-card>
-            </v-col>
 
 <!-- 
             <v-col>
@@ -105,7 +106,28 @@
       <v-tab-item>
         <v-container>
           <v-row>
+            
+
+
             <v-col>
+              <v-card flat>
+                <v-card-title> Данные о ребенке </v-card-title>
+                <v-card-subtitle> По дате крещения </v-card-subtitle>
+                <v-list>
+                  <v-list-item-group color="primary">
+                    <v-list-item v-for="(data, i) in filtereData" :key="i">
+                      <v-list-item-content @click="showData(data)">
+                        <v-list-item-title>
+                          {{ data.name }} - {{ data.buptDate }}
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-card>
+            </v-col>
+
+<v-col>
               <v-card flat>
                 <v-card-title> Ответы на вопросы </v-card-title>
                 <v-card-subtitle
@@ -137,26 +159,7 @@
                 </v-expansion-panels>
               </v-card>
             </v-col>
-
-
-            <v-col>
-              <v-card flat>
-                <v-card-title> Данные о ребенке </v-card-title>
-                <v-card-subtitle> По дате крещения </v-card-subtitle>
-                <v-list>
-                  <v-list-item-group color="primary">
-                    <v-list-item v-for="(data, i) in filtereData" :key="i">
-                      <v-list-item-content @click="showData(data)">
-                        <v-list-item-title>
-                          {{ data.name }} - {{ data.buptDate }}
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
-                </v-list>
-              </v-card>
-            </v-col>
-
+            
             <!-- <v-col>
               <v-card flat>
                 <v-card-title> Данные о ребенке </v-card-title>
