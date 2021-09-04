@@ -1,19 +1,22 @@
 `<template>
   <div class="hello">
-    <v-tabs v-model="tab">
+    <v-tabs v-model="tab" grow>
       <v-tab>Текущие</v-tab>
-      <v-tab>Предыдущие</v-tab>
+      <v-tab>Все</v-tab>
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <v-checkbox
-          v-model="thisWeekOnly"
-          :label="`Только текущая неделя`"
-        >
-        </v-checkbox>
         <v-container>
           <v-row>
-       
+            <v-col>
+              <v-checkbox
+                v-model="thisWeekOnly"
+                :label="`Только текущая неделя`"
+              >
+              </v-checkbox>
+            </v-col>
+          </v-row>
+          <v-row>
             <v-col>
               <v-card flat>
                 <v-card-title> Данные о ребенке </v-card-title>
@@ -23,6 +26,9 @@
                     <v-list-item v-for="(data, i) in filtereDataShot" :key="i">
                       <v-list-item-content @click="showData(data)">
                         <v-list-item-title>
+                          <v-icon  color="darken-2">
+                            mdi-chevron-right
+                          </v-icon>
                           {{ data.name }} - {{ data.buptDate }}
                         </v-list-item-title>
                       </v-list-item-content>
@@ -32,7 +38,7 @@
               </v-card>
             </v-col>
 
-     <v-col class="col-sm-12">
+            <v-col class="col-sm-12">
               <v-card flat>
                 <v-card-title> Ответы на вопросы </v-card-title>
                 <v-card-subtitle
@@ -65,8 +71,7 @@
               </v-card>
             </v-col>
 
-
-<!-- 
+            <!-- 
             <v-col>
               <v-card flat>
                 <v-card-title> Данные о ребенке </v-card-title>
@@ -100,17 +105,13 @@
             </v-col>-->
           </v-row>
         </v-container>
-      </v-tab-item> 
-
+      </v-tab-item>
 
       <v-tab-item>
         <v-container>
           <v-row>
-            
-
-
             <v-col>
-              <v-card flat>
+              <v-card>
                 <v-card-title> Данные о ребенке </v-card-title>
                 <v-card-subtitle> По дате крещения </v-card-subtitle>
                 <v-list>
@@ -118,6 +119,9 @@
                     <v-list-item v-for="(data, i) in filtereData" :key="i">
                       <v-list-item-content @click="showData(data)">
                         <v-list-item-title>
+                          <v-icon color="darken-2">
+                            mdi-chevron-right
+                          </v-icon>
                           {{ data.name }} - {{ data.buptDate }}
                         </v-list-item-title>
                       </v-list-item-content>
@@ -127,7 +131,7 @@
               </v-card>
             </v-col>
 
-<v-col>
+            <v-col class="col-sm-12"  >
               <v-card flat>
                 <v-card-title> Ответы на вопросы </v-card-title>
                 <v-card-subtitle
@@ -159,7 +163,7 @@
                 </v-expansion-panels>
               </v-card>
             </v-col>
-            
+
             <!-- <v-col>
               <v-card flat>
                 <v-card-title> Данные о ребенке </v-card-title>
@@ -191,15 +195,12 @@
                 </v-expansion-panels>
               </v-card>
             </v-col> -->
-
-
           </v-row>
         </v-container>
       </v-tab-item>
-    </v-tabs-items> 
+    </v-tabs-items>
 
-
-<!-- диалоги -->
+    <!-- диалоги -->
     <v-dialog
       fullscreen
       hide-overlay
@@ -251,20 +252,26 @@
         <v-container>
           <v-row>
             <v-col>
-              Рождение: {{ [currentData.birthDate, "DD.MM.YYYY" ]  | moment('LL') }} -
+              <b>Ребенок:</b> <br />
+              <i> Имя: </i> {{ currentData.name }} <br />
+              <i>Рождение:</i>
+              {{ [currentData.birthDate, "DD.MM.YYYY"] | moment("LL") }} -
               {{ currentData.birthPlace }}
               <br />
-              Крещение: {{ [currentData.buptDate, "DD.MM.YYYY" ] | moment('LL') }} -
+              <i>Крещение:</i>
+              {{ [currentData.buptDate, "DD.MM.YYYY"] | moment("LL") }} -
               {{ currentData.buptPlace }} <br /><br />
               <b>Родители:</b> <br />
-              {{ currentData.father }}<br />
-              {{ currentData.mother }}<br />
-              {{ currentData.married }}<br /><br />
+              <i>Отец:</i> {{ currentData.father }}<br />
+              <i>Мать:</i> {{ currentData.mother }}<br />
+              <i>Венчание:</i> {{ currentData.married }}<br /><br />
               <b>Крестные:</b> <br />
-              {{ currentData.bfather }}<br />
-              {{ currentData.bmother }}<br /><br />
-              Свидетельство: {{ currentData.stateDocs }}<br /><br />
-              {{ currentData.timeStamp }}
+              <i>Отец:</i> {{ currentData.bfather }}<br />
+              <i>Мать:</i> {{ currentData.bmother }}<br /><br />
+              <b>Свидетельство:</b> <br />
+              {{ currentData.stateDocs }}<br />
+              <br />
+              <p><i>Дата заполнения:</i> {{ currentData.timeStamp }}</p>
             </v-col>
           </v-row>
         </v-container>
@@ -335,7 +342,7 @@ export default {
     },
     showData(data) {
       this.currentData = data;
-     // console.log(this.currentData)
+      // console.log(this.currentData)
       this.dataDialog = true;
     },
   },

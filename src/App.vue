@@ -12,7 +12,7 @@
         text
       >
         <span class="mr-2">Подготовка к крещению</span>
-        <v-icon>mdi-open-in-new</v-icon>
+        <v-icon>mdi-plus </v-icon>
       </v-btn>
     </v-app-bar>
 
